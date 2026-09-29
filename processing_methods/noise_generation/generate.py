@@ -1,8 +1,9 @@
 import numpy as np
 import random
 import math
+from PIL import Image
 
-# this function takes in a mean and a standard deviation and generates two noisy pixels at a time according to the Box-Muller algorithm
+# additive gaussian noise
 def box_muller(m, sigma):
     r = random.random()
     fi = random.random()
@@ -34,16 +35,54 @@ def generate_gaussian_noise(height, width, mean, std):
     return noise[:, :width]
 
 
-# this function takes an image, a mean and a standard deviation and applies additive Gaussian noise to the image
-# note that here std should be a fraction of the original image's standard deviation: i.g. std=(0.2 * standard_deviation)
 def gaussian_noise(img, mean, std):
-    # use a copy to not mutate the original image and cast to float64
-    img = img.copy().astype(np.float64)
-
-    # generate a 2d array of noise
+    img = img.copy()
     noise = generate_gaussian_noise(height=img.shape[0], width=img.shape[1], mean=mean, std=std)
+    img = np.clip(np.round(img + noise - mean), 0, 255).astype(np.uint8)
+    return img
+    
 
-    # add the noise to the clean image
-    # round and clip on [0, 255] then cast back to uint8
-    return np.clip(np.round(img + noise - mean), 0, 255).astype(np.uint8)
+# impulse noise 
+def salt_pepper_impulse_noise(img, p=0.01):
+    img = img.copy() 
+    affected_pixels = int(np.round(p * (img.shape[0] * img.shape[1])))
+
+    #print(affected_pixels)
+    
+    for i in range(affected_pixels):
+        x, y = random.randint(0, img.shape[0] - 1), random.randint(0, img.shape[1] - 1)
+        pixel_value = random.randint(0, 1)
+        if pixel_value == 0:
+            img[x, y] = 0
+        else:
+            img[x, y] = 255
+            
+    return img
+
+
+def bipolar_impulse_noise(img, p=0.01, n1=0, n2=255):
+    img = img.copy()
+    affected_pixels = int(np.round(p * (img.shape[0] * img.shape[1])))
+    
+    for i in range(affected_pixels):
+        x, y = random.randint(0, img.shape[0] - 1), random.randint(0, img.shape[1] - 1)
+        pixel_value = random.randint(0, 1)
+        if pixel_value == 0:
+            img[x, y] = n1
+        else:
+            img[x, y] = n2
+            
+    return img
+
+
+def random_impulse_noise(img, p=0.01, n_min=0, n_max=255):
+    img = img.copy()
+    affected_pixels = int(np.round(p * (img.shape[0] * img.shape[1])))
+
+    for i in range(affected_pixels):
+        x, y = random.randint(0, img.shape[0] - 1), random.randint(0, img.shape[1] - 1)
+        pixel_value = random.randint(n_min, n_max)
+        img[x, y] = pixel_value 
+
+    return img
 

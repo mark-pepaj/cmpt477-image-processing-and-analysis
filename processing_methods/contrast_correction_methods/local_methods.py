@@ -4,7 +4,6 @@ from PIL import Image
 from mirroring.mirror import mirror
 from image_statistics.stats import *
 
-
 def get_local_cumulative_histogram(frame):
     n = 0
     center_pixel = frame[frame.shape[0] // 2, frame.shape[1] // 2]

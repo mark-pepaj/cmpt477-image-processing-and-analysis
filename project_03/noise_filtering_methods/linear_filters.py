@@ -12,7 +12,7 @@ def linear_filter(img, W):
     filtered_img = np.zeros((img.shape[0], img.shape[1])) 
 
     # make img a copy to avoid mutating the original image
-    img = img.astype(np.float64)
+    img = img.copy()
     # apply mirror padding to the noisy image
     img = mirror(img, k=(filter_size//2))
 

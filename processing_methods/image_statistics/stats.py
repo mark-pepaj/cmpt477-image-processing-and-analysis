@@ -1,7 +1,8 @@
+from pathlib import Path
+from PIL import Image
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-from pathlib import Path
 
 def get_min_max(img):
     minimum, maximum = float('inf'), float('-inf')
@@ -17,7 +18,6 @@ def get_min_max(img):
 
 
 def get_mean(img):
-    img = img.astype(np.float64)
     mean = 0.0
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
@@ -26,7 +26,6 @@ def get_mean(img):
 
 
 def get_variance(img, mean=None):
-    img = img.astype(np.float64)
     if mean is None:
         mean = get_mean(img)
     var = 0 
