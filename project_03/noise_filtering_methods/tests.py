@@ -12,19 +12,19 @@ from noise_filtering_methods.nonlinear_filters import *
 # optional arguments are: an std dev fraction for guassian noise generation
 # a percentage of effected pixels for impulse noise, bounds for random noise, and a min and max value for bipolar noise
 # show can be set to True to display the noisy and filtered images
-def test_linear_filter(img, W, noise_model="Gaussian", std_fraction=0.1, p=0.01, n1=0, n2=255, n_min=0, n_max=255, show=False):
+def test_linear_filter(img, W, noise_model="gaussian", std_fraction=0.1, p=0.01, n1=0, n2=255, n_min=0, n_max=255, show=False):
     filter_size = W.shape[0]
 
     # generate the noisy image based on the noise_model
-    if noise_model == "Gaussian":
+    if noise_model == "gaussian":
         # calculate the mean and std of the image for Gaussian noise
         _, _, mean, _, std, _ = get_stats(img, silent=True)
         noisy_img = gaussian_noise(img, mean=mean, std=std_fraction * std)
-    elif noise_model == "Salt and Pepper":
+    elif noise_model == "salt and pepper":
         noisy_img = salt_pepper_impulse_noise(img, p=p)
-    elif noise_model == "Bipolar":
+    elif noise_model == "bipolar":
         noisy_img = bipolar_impulse_noise(img, p=p, n1=n1, n2=n2)
-    elif noise_model == "Random":
+    elif noise_model == "random":
         noisy_img = random_impulse_noise(img, p=p, n_min=n_min, n_max=n_max)
     
     # apply linear filtering with kernel, W
@@ -49,18 +49,18 @@ def test_linear_filter(img, W, noise_model="Gaussian", std_fraction=0.1, p=0.01,
 
 
 # same for this function but it applies non linear filtering and accepts a filter method as an argument
-def test_nonlinear_filter(img, noise_model="Salt and Pepper", filter_method="Differential Rank", filter_size=3, r=2, s=10, std_fraction=0.1, p=0.005, n1=0, n2=255, n_min=0, n_max=255, show=False):
-    if noise_model == "Gaussian":
+def test_nonlinear_filter(img, noise_model="salt and pepper", filter_method="Differential Rank", filter_size=3, r=2, s=10, std_fraction=0.1, p=0.005, n1=0, n2=255, n_min=0, n_max=255, show=False):
+    if noise_model == "gaussian":
         _, _, mean, _, std, _ = get_stats(img, silent=True)
         noisy_img = gaussian_noise(img, mean=mean, std=std_fraction * std)
-    elif noise_model == "Salt and Pepper":
+    elif noise_model == "salt and pepper":
         noisy_img = salt_pepper_impulse_noise(img, p=p)
-    elif noise_model == "Bipolar":
+    elif noise_model == "bipolar":
         noisy_img = bipolar_impulse_noise(img, p=p, n1=n1, n2=n2)
-    elif noise_model == "Random":
+    elif noise_model == "random":
         noisy_img = random_impulse_noise(img, p=p, n_min=n_min, n_max=n_max)
     
-    if filter_method == "Median":
+    if filter_method == "median":
         filtered_img = median_filter(noisy_img, filter_size=filter_size)
     else:
         filtered_img = differential_rank_impulse_detection(noisy_img, r=r, s=s)

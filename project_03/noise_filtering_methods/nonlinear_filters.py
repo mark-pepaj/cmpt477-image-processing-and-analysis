@@ -64,7 +64,7 @@ def median_filter(img, filter_size=3):
 
 def differential_rank_impulse_detection(img, filter_size=3, r=2, s=10):
     # make a copy of the image to avoid mutating the original image
-    img = img.copy()
+    img = img.astype(np.float64)
 
     # make another copy before padding
     # since this is a detection algorithm the undetected pixels should be left alone

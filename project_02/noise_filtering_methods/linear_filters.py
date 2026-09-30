@@ -30,6 +30,7 @@ def linear_filter(img, W):
             filtered_img[i, j] = (window.reshape(1, -1) @ W.reshape(-1, 1)).item()
 
     # round the filtered image and clip it on [0, 255] then cast to type uint8
+    #return np.clip(np.round(filtered_img), 0, 255).astype(np.uint8)
     return np.clip(np.round(filtered_img), 0, 255).astype(np.uint8)
  
 

@@ -17,14 +17,3 @@ def mirror(img, k=1):
     return img
 
 
-"""
-img = np.array(Image.open("../../DATA/images/Lena_Y.tif"))
-img = mirror(img)
-img = Image.fromarray(img)
-img.show()
-
-print(img[k, k])    # top left corner
-print(img[k, -1-k]) # top right corner
-print(img[-1-k, k]) # bottom left corner
-print(img[-1-k, -1-k]) # bottom right corner
-"""
