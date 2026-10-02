@@ -1,7 +1,6 @@
 import numpy as np
 import random
 import math
-from PIL import Image
 
 # additive gaussian noise
 def box_muller(m, sigma):

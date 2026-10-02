@@ -9,11 +9,11 @@ img = np.asarray(Image.open("images/Airplane-F16_Y.tif")).astype(np.float64)
 
 
 # mean filter
-W = np.ones((3, 3), dtype=np.float64) / 9
+#W = np.ones((3, 3), dtype=np.float64) / 9
 
 
 # smart filter
-#W = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]], dtype=np.float64) / 16
+W = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]], dtype=np.float64) / 16
 #W = np.array([[1, 3, 1], [3, 7, 3], [1, 3, 1]], dtype=np.float64) / 23
 
 

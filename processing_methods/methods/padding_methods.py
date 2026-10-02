@@ -1,5 +1,4 @@
 import numpy as np
-from PIL import Image
 
 def mirror(img, k=1):
     img = img.copy()
