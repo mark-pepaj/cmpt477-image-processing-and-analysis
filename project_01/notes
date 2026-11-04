@@ -1,0 +1,5 @@
+Project 1 is about finding the statistics about an image: minimum, maximum, mean, variance, standard deviation, 
+intensity histogram; the statistics are used to correct the contrast of the image.
+
+Two methods for contrast correction are considered: Linear Contrast Correction and Histogram Equalization.
+

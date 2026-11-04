@@ -1,0 +1,9 @@
+Project 4 covers two Rank Order filters.
+The Rank Order EV filter (mean) and Rank Order ER filter (median).
+The Rank Order EV filter filters additive noise and the Rank Order ER filter filters impulse noise.
+Images were padded using mirror padding.
+Additional implementations: 
+- adaptive filtering using the standard deviation of a local window
+- DRID detector in conjunction with the Rank Order ER filter
+
+

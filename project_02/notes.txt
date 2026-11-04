@@ -1,0 +1,7 @@
+Project 2 covers methods for noise generation and noise filtering.
+Noise Generation: guassian noise generation using the Box-Muller algorithm and applying noise to an image.
+Noise Filters:    linear convolution filtering, mean filtering, and smart mean filtering.
+
+Since we use local neighborhood processing for these filtering methods, mirror padding is also implemented here.
+
+We also added functions for finding the MSE, RMSE, and PSNR between two images.

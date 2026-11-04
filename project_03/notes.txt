@@ -1,0 +1,6 @@
+Project 3 covers impulse noise generation and impulse noise filtering.
+Images are padded with mirror padding since filters here are local neighborhood filters.
+We implemented noise generation functions for salt and pepper impulse noise, bipolar impulse noise, and random impulse noise.
+We implemented median filtering and implemented the Differential Rank Impulse Detector to
+detect noisy pixels and filter them with the median filter.
+
