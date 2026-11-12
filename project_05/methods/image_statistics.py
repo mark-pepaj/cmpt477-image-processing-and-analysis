@@ -5,35 +5,37 @@ import math
 import matplotlib.pyplot as plt
 
 def get_min_max(img):
+    img = img.astype(np.float64).reshape(-1)
     minimum, maximum = float('inf'), float('-inf')
 
     for i in range(img.shape[0]):
-        for j in range(img.shape[1]):
-            if img[i, j] < minimum:
-                minimum = img[i, j]
-            if img[i, j] > maximum:
-                maximum = img[i, j]
+        if img[i] < minimum:
+            minimum = img[i]
+        if img[i] > maximum:
+            maximum = img[i]
 
     return int(minimum), int(maximum)
 
 
 def get_mean(img):
+    img = img.astype(np.float64).reshape(-1)
     mean = 0.0
+
     for i in range(img.shape[0]):
-        for j in range(img.shape[1]):
-            mean += img[i, j]
-    return mean / (img.shape[0] * img.shape[1])
+        mean += img[i]
+    return mean / img.shape[0]
 
 
 def get_variance(img, mean=None):
-    img = img.astype(np.float64)
+    img = img.astype(np.float64).reshape(-1)
+
     if mean is None:
         mean = get_mean(img)
     var = 0 
+
     for i in range(img.shape[0]):
-        for j in range(img.shape[1]):
-            var += (img[i, j] - mean)**2
-    return var / (img.shape[0] * img.shape[1])
+        var += (img[i] - mean)**2
+    return var / img.shape[0]
 
 
 def get_std(img, variance=None):

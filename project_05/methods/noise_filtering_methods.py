@@ -7,7 +7,7 @@ from .image_statistics import get_min_max
 # Linear Filtering Methods
 # function takes an unpadded image, img, and a filter kernel, W
 # performs convolution over the image with kernel W
-def linear_convolution_filter(img, W):
+def linear_convolution_filter(img, W, mode="spatial"):
     # cast the image to float for operations
     img = img.astype(np.float64)
     window_size = W.shape[0]
@@ -16,21 +16,38 @@ def linear_convolution_filter(img, W):
     # here I initialize it as a 2d array of zeros
     filtered_img = np.zeros((img.shape[0], img.shape[1])) 
 
-    # apply mirror padding to the noisy image
-    img = pad(img, pad_width=(window_size//2), mode="mirror")
+    match mode:
+        case "spatial":
+            # apply mirror padding to the noisy image
+            img = pad(img, pad_width=(window_size//2), mode="mirror")
 
+            for i in range(filtered_img.shape[0]):
+                for j in range(filtered_img.shape[1]):
+                    # take a (window_size x window_size) window 
+                    window = img[i:window_size+i, j:window_size+j]
+                    
+                    # take the dot product of the flattened window and the flattened filter kernel
+                    # a (3x3) window is reshaped to (1, 9)
+                    # a (3x3) kernel is reshaped to (9, 1)
+                    # (1, 9) @ (9, 1) = (1) = an array with a single element
+                    # .item() makes it a scalar so it can be assigned to the filtered image
+                    filtered_img[i, j] = (window.reshape(1, -1) @ W.reshape(-1, 1)).item()
+        case "frequency":
+            h = np.zeros((img.shape[0], img.shape[1]))
+            #h[:W.shape[0], :W.shape[1]] = W
+            #H = np.fft.fft2(h)
+            #G = np.fft.fft2(img)
 
-    for i in range(filtered_img.shape[0]):
-        for j in range(filtered_img.shape[1]):
-            # take a (window_size x window_size) window 
-            window = img[i:window_size+i, j:window_size+j]
-            
-            # take the dot product of the flattened window and the flattened filter kernel
-            # a (3x3) window is reshaped to (1, 9)
-            # a (3x3) kernel is reshaped to (9, 1)
-            # (1, 9) @ (9, 1) = (1) = an array with a single element
-            # .item() makes it a scalar so it can be assigned to the filtered image
-            filtered_img[i, j] = (window.reshape(1, -1) @ W.reshape(-1, 1)).item()
+            h[:2, :2] = W[1:, 1:]
+            h[0:2, -1] = W[1:, 0]
+            h[-1, :2] = W[0, 1:]
+            h[-1, -1] = W[0, 0] 
+
+            H = np.fft.fft2(h)
+            G = np.fft.fft2(img)
+                        
+            filtered_img = (np.fft.ifft2(G * H)).real
+
 
     # round the filtered image and clip it on [0, 255] then cast to type uint8
     return np.clip(np.round(filtered_img), 0, 255).astype(np.uint8)

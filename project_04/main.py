@@ -8,26 +8,6 @@ from methods.noise_generation_methods import *
 from methods.noise_filtering_methods import *
 
 
-# function to calculate the mean of a window
-def get_window_mean(window):
-    mean = 0
-    for i in range(len(window)):
-        mean += window[i]
-    return mean / len(window)
-
-
-# function to calculate the standard deviation of a window
-def get_window_std(window):
-    mean = get_window_mean(window)
-    var = 0        
-
-    for i in range(len(window)):
-        var += (window[i] - mean)**2
-    var /= len(window)
-
-    return np.sqrt(var)
-
-
 # rank order ev with mean
 def mean_rank_order_ev_filter(img, filter_size=3, ev=25):
     # cast the image array to float64
@@ -60,7 +40,7 @@ def mean_rank_order_ev_filter(img, filter_size=3, ev=25):
                 if np.abs(center_pixel - variational_series[k]) <= ev:
                     ev_interval.append(variational_series[k])
             # finally update the current pixel to be the mean of the ev interval
-            filtered_img[i, j] = get_window_mean(ev_interval)
+            filtered_img[i, j] = get_mean(ev_interval)
 
     # round and clip the image on [0, 255] and cast to uin8
     return np.clip(np.round(filtered_img), 0, 255).astype(np.uint8)
